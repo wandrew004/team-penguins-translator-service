@@ -31,6 +31,9 @@ implementation. The `translate` method takes a string `content` as input and
 returns a tuple `(bool, str)`. Indicating if `content` is in English and
 the translated content if `content` is not in English.
 
+> [!WARNING]
+> Do not push your API key to your repository. You should use environment variables to store your API key.
+
 ## Handle responses from LLM
 
 You need to design your prompt so that you can parse the result from a LLM model.
@@ -48,3 +51,29 @@ In `test_llm_gibberish_response()`, please implement a unit test that verifies
 that your program can handle a gibberish response.
 
 
+# Integrate Translator Service With NodeBB
+
+Please merge the changes in `https://github.com/CMU-313/NodeBB-S24/tree/leo/draft-pr` to your NodeBB repository.
+
+```
+git remote add upstream https://github.com/CMU-313/NodeBB-S24.git
+git pull upstream leo/draft-pr
+```
+
+The changes will call translator API when a new post
+is received. If the API response indicates that the post is not in English, it will show the translated content in the post.
+
+Since you need to use your own translator service, you need to provide your API endpoint through environment
+variable `TRANSLATOR_API`.
+
+```
+export TRANSLATOR_API=https://PATH_TO_YOUR_DEPLOYED_SERVICE
+./nodebb start
+```
+
+To add environment variables to your GCP deployment, you can follow [this](https://cloud.google.com/run/docs/configuring/environment-variables) tutorial.
+
+
+Once you have deployed the changes, you can test the translator service by creating a new post in NodeBB with non-English content `这是一条中文消息`.
+
+![image](./assets/image.png)
