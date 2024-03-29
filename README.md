@@ -24,33 +24,6 @@ Once you have deployed this service, you can access the following link `https://
 }
 ```
 
-# Implement LLM based translator
-
-Please replace `translate` method in `src/translator.py` with your LLM based
-implementation. The `translate` method takes a string `content` as input and
-returns a tuple `(bool, str)`. Indicating if `content` is in English and
-the translated content if `content` is not in English.
-
-> [!WARNING]
-> Do not push your API key to your repository. You should use environment variables to store your API key.
-
-## Handle responses from LLM
-
-You need to design your prompt so that you can parse the result from a LLM model.
-However, your system needs to be robust if LLM does not respond as you expect.
-It is up to you how your system reacts to unexpected responses. You can try a different prompt, return an error message, or simply assume the input is in English.
-
-# Test your implementation
-
-Now you need to test your implementation.
-
-To do this, please complete the unit test in `test/unit/test_translator.py`.
-In `test_llm_normal_response()`, please implement a unit test that verifies that
-your program can return correct value if LLM provides an expected result.
-In `test_llm_gibberish_response()`, please implement a unit test that verifies
-that your program can handle a gibberish response.
-
-
 # Integrate Translator Service With NodeBB
 
 Please merge the changes in `https://github.com/CMU-313/NodeBB-S24/tree/leo/draft-pr` to your NodeBB repository.
@@ -78,3 +51,30 @@ To add environment variables to your GCP deployment, you can follow [this](https
 Once you have deployed the changes, you can test the translator service by creating a new post in NodeBB with non-English content `这是一条中文消息`.
 
 ![image](./assets/image.png)
+
+
+# Implement LLM based translator
+
+Please replace `translate` method in `src/translator.py` with your LLM based
+implementation. The `translate` method takes a string `content` as input and
+returns a tuple `(bool, str)`. Indicating if `content` is in English and
+the translated content if `content` is not in English.
+
+> [!WARNING]
+> Do not push your API key to your repository. You should use environment variables to store your API key.
+
+## Handle responses from LLM
+
+You need to design your prompt so that you can parse the result from a LLM model.
+However, your system needs to be robust if LLM does not respond as you expect.
+It is up to you how your system reacts to unexpected responses. You can try a different prompt, return an error message, or simply assume the input is in English.
+
+# Test your implementation
+
+Now you need to test your implementation.
+
+To do this, please complete the unit test in `test/unit/test_translator.py`.
+In `test_llm_normal_response()`, please implement a unit test that verifies that
+your program can return correct value if LLM provides an expected result.
+In `test_llm_gibberish_response()`, please implement a unit test that verifies
+that your program can handle a gibberish response.
