@@ -18,6 +18,10 @@ Please follow [this](https://cmu-313.github.io/recitations/reci6-deployment/#tas
 tutorial to deploy translator service to Google cloud.
 
 
+> [!WARNING]
+> Set the Entrypoint to empty in the `Set up with Cloud Build` section.
+
+
 # Test your deployment
 
 Once you have deployed this service, you can access the following link `https://PATH_TO_YOUR_DEPLOYED_SERVICE/?content=这是一条中文消息` and you will see a JSON response
