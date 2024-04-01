@@ -84,6 +84,7 @@ the translated content if `content` is not in English.
 
 Integrate LLM to a production service is slightly different from using it in a 
 notebook. You can follow [this](https://ai.google.dev/tutorials/python_quickstart)
+and [this](https://github.com/google/generative-ai-python) 
 to setup LLM API properly. 
 
 
