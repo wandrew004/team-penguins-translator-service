@@ -33,6 +33,13 @@ Once you have deployed this service, you can access the following link `https://
 }
 ```
 
+Run pytest locally
+
+
+```
+python3 -m pytest
+```
+
 # Integrate Translator Service With NodeBB
 
 Please merge the changes in `https://github.com/CMU-313/NodeBB-S24/tree/leo/draft-pr` to your NodeBB repository.
