@@ -75,6 +75,11 @@ implementation. The `translate` method takes a string `content` as input and
 returns a tuple `(bool, str)`. Indicating if `content` is in English and
 the translated content if `content` is not in English.
 
+Integrate LLM to a production service is slightly different from using it in a 
+notebook. You can follow [this](https://ai.google.dev/tutorials/python_quickstart)
+to setup LLM API properly. 
+
+
 > [!WARNING]
 > Do not push your API key to your repository. You should use environment variables to store your API key.
 
