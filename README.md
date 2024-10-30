@@ -1,9 +1,9 @@
-# Fork this repo
+# Forking this repo
 
 <img width="374" alt="image" src="https://github.com/CMU-313/translator-service/assets/5557706/47e9c1fb-5b9d-41fc-b825-05994867388a">
 
 
-# Install Dependencies
+# Installing dependencies
 
 You need to install `flask` and `pytest` to run this application.
 
@@ -12,17 +12,11 @@ pip3 install flask
 pip3 install pytest
 ```
 
-# Deploy this service to Google cloud
+# Deploying this service to Azure
 
-Please follow [this](https://cmu-313.github.io/recitations/reci6-deployment/#task-1b-deploy-on-google-cloud-platform)
-tutorial to deploy translator service to Google cloud.
+Please follow [these instructions](https://docs.google.com/document/d/1cC95F2752ZNmAJ_VPjZmEd8UoUhBi7-lQElx6OaZFd0) to deploy the translator service to Azure.
 
-
-> [!WARNING]
-> Set the Entrypoint to empty in the `Set up with Cloud Build` section.
-
-
-# Test your deployment
+# Testing your deployment
 
 Once you have deployed this service, you can access the following link `https://PATH_TO_YOUR_DEPLOYED_SERVICE/?content=这是一条中文消息` and you will see a JSON response
 
@@ -40,7 +34,7 @@ Run pytest locally
 python3 -m pytest
 ```
 
-# Integrate Translator Service With NodeBB
+# Integrating the translator service with NodeBB
 
 Please merge the changes in `https://github.com/CMU-313/NodeBB-S24/tree/leo/draft-pr` to your NodeBB repository.
 
@@ -56,26 +50,23 @@ After you merge the changes, you need to build NodeBB with new changes.
 ./nodebb build
 ```
 
-The changes will call translator API when a new post
-is received. If the API response indicates that the post is not in English, it will show the translated content in the post.
+The changes will call the translator API when a new post is received. If the API response indicates that the post is not in English, it will show the translated content in the post.
 
-Since you need to use your own translator service, you need to provide your API endpoint through environment
-variable `TRANSLATOR_API`.
+Since you need to use your own translator service, you need to provide your API endpoint through environment variable `TRANSLATOR_API`.
 
 ```
 export TRANSLATOR_API=https://PATH_TO_YOUR_DEPLOYED_SERVICE
 ./nodebb start
 ```
 
-To add environment variables to your GCP deployment, you can follow [this](https://cloud.google.com/run/docs/configuring/environment-variables) tutorial.
+To add environment variables to your Azure deployment, you can follow [this](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/manage-environment-variables) tutorial.
 
 
-Once you have deployed the changes, you can test the translator service by creating a new post in NodeBB with non-English content `这是一条中文消息`.
+Once you have deployed the changes, you can test the translator service by creating a new post in NodeBB with the non-English content `这是一条中文消息`.
 
 ![image](./assets/image.png)
 
-
-# Implement LLM based translator
+# Implementing the LLM based translator
 
 Please replace `translate` method in `src/translator.py` with your LLM based
 implementation. The `translate` method takes a string `content` as input and
@@ -91,13 +82,13 @@ to setup LLM API properly.
 > [!WARNING]
 > Do not push your API key to your repository. You should use environment variables to store your API key.
 
-## Handle responses from LLM
+## Handle responses from the LLM
 
-You need to design your prompt so that you can parse the result from a LLM model.
-However, your system needs to be robust if LLM does not respond as you expect.
+You need to design your prompt so that you can parse the result from an LLM model.
+However, your system needs to be robust enough to recover if the LLM does not respond as you expect.
 It is up to you how your system reacts to unexpected responses. You can try a different prompt, return an error message, or simply assume the input is in English.
 
-# Test your implementation
+# Testing your implementation
 
 Now you need to test your implementation.
 
