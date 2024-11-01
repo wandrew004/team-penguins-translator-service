@@ -36,13 +36,10 @@ python3 -m pytest
 
 # Integrating the translator service with NodeBB
 
-Please merge the changes in `https://github.com/CMU-313/NodeBB-S24/tree/leo/draft-pr` to your NodeBB repository.
+> [!CAUTION]
+> This part of the assignment is still being developed and tested by the staff, and will be updated to its final state by November 7th.
 
-```
-git remote add upstream https://github.com/CMU-313/NodeBB-S24.git
-git fetch upstream
-git cherry-pick f385a392cfe26812a86b2c87729d561e5c3c9cd4
-```
+Please merge the changes in `https://github.com/CMU-313/NodeBB-S24/commit/f385a392cfe26812a86b2c87729d561e5c3c9cd4` to your NodeBB repository.
 
 After you merge the changes, you need to build NodeBB with new changes.
 
