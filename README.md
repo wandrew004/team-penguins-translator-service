@@ -1,79 +1,89 @@
-# Forking this repo
+# Translator Service
 
-<img width="374" alt="image" src="https://github.com/CMU-313/translator-service/assets/5557706/47e9c1fb-5b9d-41fc-b825-05994867388a">
+This repo contains a Python Flask web app that will perform live translations for input text. The repo contains starter code that provides hard-coded dummy translations, which you can modify to include calls to an LLM.
 
+## Fork this repo to use
 
-# Installing dependencies
+<img width="200" alt="image" src="https://github.com/CMU-313/translator-service/assets/5557706/47e9c1fb-5b9d-41fc-b825-05994867388a">
 
-You need to install `flask` and `pytest` to run this application.
+# Build and run locally
 
 ```
-pip3 install flask
-pip3 install pytest
+virtualenv .app                    # Create a virtual environment (do this just once in the directory)
+source .app/bin/activate           # Start virtual environment (do this every time you use a new terminal tab in this directory)
 ```
+
+## Installing Dependencies
+```
+pip install -r requirements.txt    # Do this just once. It will install `flask` and `pytest`
+```
+
+## Run tests locally
+```
+pytest                             # You should see the tests in test_translator.py run and pass successfully
+```
+
+## Run the translator service locally
+
+```
+flask run                          # Starts a web server on http://127.0.0.1:5000
+```
+
+Navigate to [http://127.0.0.1:5000/?content=Dies ist eine Nachricht auf Deutsch](http://127.0.0.1:5000/?content=Dies%20ist%20eine%20Nachricht%20auf%20Deutsch) and you should see the response JSON:
+
+```
+{"is_english":false,"translated_content":"This is a German message"}
+```
+
+See the code in `src/translator.py` for the full list of hard-coded dummy translations.
 
 # Deploying this service to Azure
 
-Please follow [these instructions](https://docs.google.com/document/d/1cC95F2752ZNmAJ_VPjZmEd8UoUhBi7-lQElx6OaZFd0) to deploy the translator service to Azure.
+Create a new Web App and deploy to Azure. Recall the [steps you used to deploy NodeBB to Azure (section "Create a Web App")](https://docs.google.com/document/d/1cC95F2752ZNmAJ_VPjZmEd8UoUhBi7-lQElx6OaZFd0). The process to deploy the translator service is similar, with a few differences:
 
-# Testing your deployment
+1. You do not need a database / Redis cache, just create a new Web App.
+2. For the runtime stack, choose "Python 3.10" instead of NodeJS.
+3. App Service Plan: Basic B1 should be sufficient
+4. On the "Deployment" tab, make sure to enable "Basic Authentication" at the bottom, then enable "Continuous Deployment" at the top, and connect to your fork of this GitHub repository. You can preview the workflow file, which should look similar to [this file](https://github.com/CMU-313/translator-service/blob/f24/.github/workflows/sample-build.yml) but have your own "app-name" and "publish-profile" at the bottom of the file.
+5. Once you create the resource, the deployment should ideally work out-of-the-box. Azure can detect that your repo is a Flask app and run it.
 
-Once you have deployed this service, you can access the following link `https://PATH_TO_YOUR_DEPLOYED_SERVICE/?content=这是一条中文消息` and you will see a JSON response
+## Testing your deployment
 
-```json
-{
-    "is_english":false,
-    "translated_content":"This is a Chinese message"
-}
-```
+Once you have deployed this service, you can access the following link `https://<app-name>.azurewebsites.net/?content=Dies%20ist%20eine%20Nachricht%20auf%20Deutsch` (replace `<app-name>` with your deployed resource name) and you will see a JSON response like the one above.
 
-Run pytest locally
-
-
-```
-python3 -m pytest
-```
 
 # Integrating the translator service with NodeBB
 
-> [!CAUTION]
-> This part of the assignment is still being developed and tested by the staff, and will be updated to its final state by November 7th.
+Now that you have a dummy translator service deployed, you can integrate it into NodeBB by allowing new posts to be translated at creation time and to display a "Translate" button for such posts. To save you the trouble, we are providing the code changes required for this UI. You need two sets of changes, in the back-end (NodeBB repo) and in the front-end (theme repo):
 
-Please merge the changes in `https://github.com/CMU-313/NodeBB-S24/commit/f385a392cfe26812a86b2c87729d561e5c3c9cd4` to your NodeBB repository.
+1. https://github.com/CMU-313/NodeBB/compare/f24...f24-p4
+2. https://github.com/CMU-313/nodebb-theme-harmony/compare/f24...f24-p4
 
-After you merge the changes, you need to build NodeBB with new changes.
+You can merge this commit directly if you know how to set up a new remote and perform cherry picking; or you can just look at the diffs above and copy+paste the changes carefully into your own NodeBB repos. These are provided only as suggestions but you are welcome to do something else.
 
-```
-./nodebb build
-```
+Note that you will have to edit the translator service API URL in your integration: https://github.com/CMU-313/NodeBB/blob/f24-p4/src/translate/index.js#L7
 
-The changes will call the translator API when a new post is received. If the API response indicates that the post is not in English, it will show the translated content in the post.
+## Testing the integration
 
-Since you need to use your own translator service, you need to provide your API endpoint through environment variable `TRANSLATOR_API`.
+Re-deploy your NodeBB after merging all the changes with `./nodebb build` and `./nodebb start` (or `./nodebb dev`). Now, when you create a new post using one of the hard-coded non-English texts they should get translated auotmatically by the back-end:
 
-```
-export TRANSLATOR_API=https://PATH_TO_YOUR_DEPLOYED_SERVICE
-./nodebb start
-```
+![image](https://github.com/user-attachments/assets/61f1d9ca-3ca4-4a68-8869-d381d3d06ac6)
 
-To add environment variables to your Azure deployment, you can follow [this](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/manage-environment-variables) tutorial.
+After submitting...
 
+![image](https://github.com/user-attachments/assets/f07d51ea-217a-44d8-a314-62bbe1a4cee4)
 
-Once you have deployed the changes, you can test the translator service by creating a new post in NodeBB with the non-English content `这是一条中文消息`.
+Clicking the button reveals...
 
-![image](./assets/image.png)
+![image](https://github.com/user-attachments/assets/1e804235-684f-46fd-b016-0d3dd3297991)
+
 
 # Implementing the LLM based translator
 
 Please replace `translate` method in `src/translator.py` with your LLM based
 implementation. The `translate` method takes a string `content` as input and
-returns a tuple `(bool, str)`. Indicating if `content` is in English and
+returns a tuple `(bool, str)`, indicating if `content` is in English and
 the translated content if `content` is not in English.
-
-Integrate LLM to a production service is slightly different from using it in a 
-notebook. You can follow [this](https://ai.google.dev/tutorials/python_quickstart)
-and [this](https://github.com/google/generative-ai-python) 
-to setup LLM API properly. 
 
 
 > [!WARNING]
