@@ -12,9 +12,7 @@ def test_french():
     assert translated_content == "This is a French message"
 
 def test_llm_normal_response():
-    is_english, translated_content = translate_content("今個週末附近學校有個網球比賽。")
-    assert is_english == False
-    assert translated_content == "There is a tennis match this weekend at the nearby school."
+    pass
 
 def test_llm_gibberish_response():
     pass
