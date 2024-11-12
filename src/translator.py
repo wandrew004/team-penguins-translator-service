@@ -10,23 +10,6 @@ client = AzureOpenAI(
     azure_endpoint="https://teampenguins.openai.azure.com/"  # Replace with your Azure endpoint
 )
 
-def get_translation(post: str) -> str:
-    context = "Translate this non-English post into English" # TODO: Insert context
-    # ---------------- YOUR CODE HERE ---------------- #
-    response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[
-        {
-          "role": "system",
-          "content": context
-        },
-        {
-            "role": "user",
-            "content": post
-        }
-    ]
-)
-    return response.choices[0].message.content
 
 def get_language(post: str) -> str:
     context = "Identfy which language this post is in. Only output the language in English." # TODO: Insert context
