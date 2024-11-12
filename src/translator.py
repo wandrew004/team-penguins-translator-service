@@ -1,7 +1,7 @@
 import os
 from openai import AzureOpenAI
 
-API_KEY = os.environ['API_KEY']
+API_KEY = os.environ.get("API_KEY")
 
 # Initialize the Azure OpenAI client
 client = AzureOpenAI(
