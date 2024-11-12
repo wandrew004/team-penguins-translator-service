@@ -1,7 +1,14 @@
 import os
+import logging
 from openai import AzureOpenAI
 
 API_KEY = os.environ.get("API_KEY")
+
+if not API_KEY:
+    logging.error("API_KEY is not set or is empty.")
+    raise ValueError("API_KEY environment variable is required")
+
+logging.info("API_KEY successfully loaded.")
 
 # Initialize the Azure OpenAI client
 client = AzureOpenAI(
